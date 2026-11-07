@@ -3,6 +3,7 @@
 ## Author: Pazza (Bronzebeard) fix buttons fxpw
 ## Version: 3.3.10
 ## Notes: Give whispers an instant messenger feel.
+## Notes-ruRU: Делает личные сообщения похожими на мессенджер.
 ## eMail: johnlangone@gmail.com
 ## X-Email: johnlangone@gmail.com
 ## X-Website: http://www.wimaddon.com/
