@@ -1,43 +1,44 @@
 # WIM (WoW Instant Messenger)
 
-WoW 3.3.5a (WotLK) addon that turns whispers and other chat into separate IM-style message windows.
+Аддон для WoW 3.3.5a (WotLK), который делает из whisper/чат-сообщений отдельные окна в стиле мессенджера.
 
-This repository is based on WIM v3 and includes local compatibility/fixes for running on the Sirus private server client (`## Interface: 30300`).
+В этой версии включены небольшие правки совместимости для клиента приватного сервера Sirus (`## Interface: 30300`).
 
-## Features
+## Возможности
 
-- Separate message window for each whisper/chat target.
-- Window tabs, history browser, filters, and emoticons.
-- Minimap icon, options UI, slash commands, URL handling.
-- Bundled libraries (`LibStub`, `Astrolabe`, `LibSharedMedia-3.0`, etc.).
-- Saved settings and history through WoW SavedVariables.
+- Отдельное окно сообщений для каждого собеседника/канала.
+- Вкладки, история, фильтры и смайлики.
+- Иконка на миникарте и окно настроек.
+- Slash-команды, обработка ссылок и URL.
+- Встроенные библиотеки (`LibStub`, `Astrolabe`, `LibSharedMedia-3.0` и другие).
+- Сохранение настроек и истории через SavedVariables.
 
-## Installation
+## Установка
 
-1. Copy the whole `Wim` folder to:
+1. Скопируйте всю папку `Wim` в:
 
    ```
    World of Warcraft/Interface/AddOns/Wim
    ```
 
-   The folder name must stay `Wim`.
-2. Restart the game or run `/reload`.
-3. Enable the addon in the AddOns menu if needed.
+   Имя папки нужно оставить `Wim`.
+2. Перезапустите игру или выполните `/reload`.
+3. При необходимости включите аддон в меню AddOns.
 
-## Usage
+## Использование
 
-- `/wim` or `/wim help` — show available slash commands.
-- `/wim options` — open settings.
-- `/wim history` — open the history viewer.
-- `/wim rl` — reload the UI.
+- `/wim` или `/wim help` — показать доступные команды.
+- `/wim options` — открыть настройки.
+- `/wim history` — открыть историю.
+- `/wim rl` — перезагрузить интерфейс.
 
-## Requirements
+## Требования
 
-- WoW client 3.3.5a / Interface 30300.
-- No separate library installation is required; dependencies are bundled in `Libs/`.
+- Клиент WoW 3.3.5a / Interface 30300.
+- Отдельно устанавливать библиотеки не нужно: зависимости уже в `Libs/`.
 
-## Notes
+## Примечания
 
-- Settings and history are stored in SavedVariables (`WIM3_Data`, `WIM3_History`, etc.).
-- If WIM does not open windows, check that it is enabled for the current character in `AddOns.txt` and inspect `Logs/FrameXML.log`.
-- The `Wim-main` nested copy was removed from this tree; the addon root itself is the active version.
+- Настройки и история сохраняются в SavedVariables (`WIM3_Data`, `WIM3_History` и т.д.).
+- Если окна WIM не открываются, проверьте, включён ли аддон для текущего персонажа в `AddOns.txt`, и посмотрите `Logs/FrameXML.log`.
+- Внутри папки аддона не оставляйте второй дубликат `Wim-main`; активная версия — сам корень `Wim`.
