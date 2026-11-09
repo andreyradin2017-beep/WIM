@@ -62,3 +62,29 @@ _G.SLASH_WIM1 = "/wim";
 RegisterSlashCommand("help", showCommands, L["Display available slash commands."])
 -- register some tools for WIM;
 RegisterSlashCommand("rl", _G.ReloadUI, L["Reload User Interface."]); -- ReloadUI()
+
+-- Debug/state inspection for developers and AI agents.
+RegisterSlashCommand("state", function()
+    local c = _G.DEFAULT_CHAT_FRAME;
+    local count = function(t)
+        local n = 0;
+        if(type(t) == "table") then
+            for _ in pairs(t) do n = n + 1; end
+        end
+        return n;
+    end;
+    local focusName = "nil";
+    if(WIM.EditBoxInFocus and WIM.EditBoxInFocus.GetName) then
+        focusName = WIM.EditBoxInFocus:GetName();
+    end
+    local modulesEnabled = 0;
+    for _, module in pairs(modules) do
+        if(module.enabled) then modulesEnabled = modulesEnabled + 1; end
+    end
+    c:AddMessage("|cff69ccf0WIM state|r");
+    c:AddMessage("enabled="..tostring(db.enabled).." initialized="..tostring(isInitialized).." state="..tostring(curState));
+    c:AddMessage("focus="..focusName);
+    c:AddMessage("windows: whisper="..count(windows.active.whisper).." chat="..count(windows.active.chat).." w2w="..count(windows.active.w2w));
+    c:AddMessage("modules enabled="..modulesEnabled);
+    if(type(WIM.CheckInvariants) == "function") then WIM.CheckInvariants(); end
+end, L["Dump WIM runtime state for debugging."]);

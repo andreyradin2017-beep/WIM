@@ -1794,11 +1794,11 @@ RegisterWidgetTrigger("chat_display", "whisper,chat,w2w", "OnHyperlinkLeave", fu
 
 RegisterWidgetTrigger("msg_box", "whisper,chat,w2w,demo", "OnEnterPressed", function(self)
 		if(strsub(self:GetText(), 1, 1) == "/") then
-			EditBoxInFocus = nil;
+			WIM.SetFocusTarget(nil, "command");
 			_G.ChatFrame1EditBox:SetText(self:GetText());
 			_G.ChatEdit_SendText(_G.ChatFrame1EditBox, 1);
 			self:SetText("");
-			EditBoxInFocus = self;
+			WIM.SetFocusTarget(self, "command");
 		else
                         if(self:GetText() == "") then
 				self:Hide();
@@ -1831,11 +1831,11 @@ RegisterWidgetTrigger("msg_box", "whisper,chat,w2w,demo", "OnUpdate", function(s
 	end);
 	
 RegisterWidgetTrigger("msg_box", "whisper,chat,w2w", "OnEditFocusGained", function(self)
-                                EditBoxInFocus = self;
+                                WIM.SetFocusTarget(self, "gain");
                                 --_G.ACTIVE_CHAT_EDIT_BOX = self; -- preserve linking abilities.
                 end);
 RegisterWidgetTrigger("msg_box", "whisper,chat,w2w", "OnEditFocusLost", function(self)
-                                EditBoxInFocus = nil;
+                                WIM.SetFocusTarget(nil, "lost");
                                 --_G.ACTIVE_CHAT_EDIT_BOX = nil;
                 end);
 RegisterWidgetTrigger("msg_box", "whisper,chat,w2w", "OnMouseUp", function(self, button)
@@ -1977,3 +1977,34 @@ local msgBoxMenu = AddContextMenu(info.text, info);
                 info.notCheckable = true;
                 info.func = function() _G.CloseDropDownMenus(); end
                 msgBoxMenu:AddSubItem(AddContextMenu("MENU_CANCEL", info));
+
+-- Unified, backward-compatible focus transition helper.
+-- Old code still reads EditBoxInFocus and WIM.EditBoxInFocus; both are kept in sync here.
+function WIM.SetFocusTarget(editBox, reason)
+    EditBoxInFocus = editBox;
+    WIM.EditBoxInFocus = editBox;
+    if(WIM and WIM.debug) then
+        WIM.CheckInvariants();
+    end
+end
+
+-- Debug-only invariant checks for implicit state. Safe no-op in normal mode.
+function WIM.CheckInvariants()
+    if(not WIM or not WIM.debug) then return; end
+    if(EditBoxInFocus ~= WIM.EditBoxInFocus) then
+        if(_G.DEFAULT_CHAT_FRAME) then _G.DEFAULT_CHAT_FRAME:AddMessage("WIM invariant: focus aliases differ"); end
+    end
+    local activeGroups = {windows.active.whisper, windows.active.chat, windows.active.w2w};
+    for _, group in pairs(activeGroups) do
+        if(type(group) == "table") then
+            for _, win in pairs(group) do
+                if(type(win) == "table" and win.isMoving and not win:IsVisible()) then
+                    if(_G.DEFAULT_CHAT_FRAME) then _G.DEFAULT_CHAT_FRAME:AddMessage("WIM invariant: moving window is not visible"); end
+                end
+                if(type(win) == "table" and win.isMoving and win.QueuedToHide) then
+                    if(_G.DEFAULT_CHAT_FRAME) then _G.DEFAULT_CHAT_FRAME:AddMessage("WIM invariant: moving window is queued to hide"); end
+                end
+            end
+        end
+    end
+end
