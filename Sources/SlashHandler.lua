@@ -1,6 +1,7 @@
 --imports
 local WIM = WIM;
 local _G = _G;
+local table = table;
 local string = string;
 local type = type;
 local pairs = pairs;
@@ -78,6 +79,7 @@ RegisterSlashCommand("state", function()
     if(WIM.EditBoxInFocus and WIM.EditBoxInFocus.GetName) then
         focusName = WIM.EditBoxInFocus:GetName();
     end
+    local modules = modules or WIM.modules or {};
     local modulesEnabled = 0;
     for _, module in pairs(modules) do
         if(module.enabled) then modulesEnabled = modulesEnabled + 1; end
