@@ -6,6 +6,7 @@ local string = string;
 local type = type;
 local pairs = pairs;
 local ipairs = ipairs;
+local tostring = tostring;
 
 --set namespace.
 setfenv(1, WIM);
