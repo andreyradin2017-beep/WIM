@@ -3,7 +3,8 @@ local WIM = WIM;
 local _G = _G;
 local string = string;
 local type = type;
-local table = table;
+local pairs = pairs;
+local ipairs = ipairs;
 
 --set namespace.
 setfenv(1, WIM);
